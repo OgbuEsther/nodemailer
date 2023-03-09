@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-
+import { emailEnv } from "../email/email";
 import testModel from "../model/test";
 
 export const registerUser = async (
@@ -9,14 +9,17 @@ export const registerUser = async (
   try {
     const { name, email, password } = req.body;
 
-    const user = await testModel.create({
+    const newUser = await testModel.create({
       name,
       email,
       password,
     });
+    emailEnv(newUser)
+      .then((res) => console.log("this is res", res))
+      .catch((err) => console.log("this is err", err));
     return res.status(200).json({
-      message: "user created successfully",
-      data: user,
+      message: "mail sent , go to your email to verify",
+      data: newUser,
     });
   } catch (error) {
     return res.status(400).json({
