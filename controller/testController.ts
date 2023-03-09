@@ -25,3 +25,23 @@ export const registerUser = async (
     });
   }
 };
+
+//get all
+
+export const getAll = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const user = await testModel.find();
+    return res.status(200).json({
+      message: "user gotten successfully",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "an error",
+      data: error,
+    });
+  }
+};
